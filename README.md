@@ -7,3 +7,5 @@ By Jay Kreps
 - Chapter 3. Logs and Real-Time Stream Processing
 - Chapter 4. Building Data Systems with Logs
 - Appendix A. Reference
+- About Author
+- About Translator
