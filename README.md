@@ -1,5 +1,6 @@
 # I ♥ Logs
 By Jay Kreps
+![cover](https://cloud.githubusercontent.com/assets/2742842/6726724/9f794358-ce55-11e4-9c0c-1f58df77c19b.jpg)
 
 ##Table of Content
 - Chapter 1. Introduction [[en](https://github.com/MengJueM/IHeartLogs/blob/master/en/Chapter1.md)][[chinese](https://github.com/MengJueM/IHeartLogs/blob/master/chinese/Chapter1.md)]
