@@ -16,4 +16,5 @@ By Jay Kreps
 -------------------------
 
 ###Cover
-![cover](https://cloud.githubusercontent.com/assets/2742842/6726724/9f794358-ce55-11e4-9c0c-1f58df77c19b.jpg)
+
+![cover](https://cloud.githubusercontent.com/assets/2742842/6726876/7d9d9de0-ce57-11e4-9244-f1cd4c4d5491.jpg)
