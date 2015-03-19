@@ -10,6 +10,7 @@ You don’t hear much about data integration in all the breathless interest and 
 
 Effective use of data follows a kind of Maslow’s hierarchy of needs. The base of the pyramid shown in Figure 2-1 involves capturing all the relevant data and being able to put it together in an applicable processing environment (whether a fancy real-time query system or just text files and Python scripts). This data needs to be modeled in a uniform way to make it easy to read and process. Once the basic needs of capturing data in a uniform way are taken care of, it is reasonable to work on infrastructure to process this data in various ways: MapReduce, real-time query systems, and so on.
 
+![chapter02 f1](https://cloud.githubusercontent.com/assets/2742842/6725992/32e569be-ce4c-11e4-97a7-30b8ba0677d8.png)
 *Figure 2-1. A maslow-like hierarchy for using data. The collection and modeling of data remains a primary concern until these are mastered, then the focus can move to higher level goals.*
 
 It’s worth noting the obvious: without a reliable and complete data flow, a Hadoop cluster is little more than a very expensive and difficult-to-assemble space heater. Once data and processing are available, you can move on to more refined problems such as good data models and consistent, well understood semantics. Finally, concentration can shift to more sophisticated processing: better visualization, reporting, and algorithmic processing and prediction. 
@@ -44,6 +45,7 @@ How can we attack this problem? Well, it turns out that the log is the natural d
 
 Each logical data source can be modeled as its own log. A data source could be an application that logs events (such as clicks or page views), or a database table that logs modifications. Each subscribing system reads from this log as quickly as it can, applies each new record to its own store, and advances its position in the log. Subscribers could be any kind of data system: a cache, Hadoop, another database in another site, a search system, and so on (see Figure 2-2).
 
+![chapter02 f2](https://cloud.githubusercontent.com/assets/2742842/6725994/3338c1ea-ce4c-11e4-9fd7-4ffe3cc8a7ed.png)
 *Figure 2-2. A log can be used for publish-subscribe messing. The publisher appends to the log and each subscriber keeps a pointer to its position in the log, allowing it to read independently.*
 
 The log concept gives a logical clock for each change against which all subscribers can be measured. This makes reasoning about the state of the different subscriber systems with respect to one another far simpler, as each has a point in time up to which it has read.
@@ -52,6 +54,7 @@ To make this more concrete, consider a simple case where there is a database and
 
 The log also acts as a buffer that makes data production asynchronous from data consumption. This is important for many reasons, but particularly when there are multiple subscribers that consume at different rates. This means a subscribing system can crash or go down for maintenance and catch up when it comes back up: the subscriber consumes at a pace it controls. A batch system such as Hadoop or a data warehouse might consume only hourly or daily, whereas a real-time query system might need to be up-to-the-second. Neither the originating data source nor the log has knowledge of the various data destination systems, so consumer systems can be added and removed with no change in the pipeline.
 
+![chapter02 f3](https://cloud.githubusercontent.com/assets/2742842/6725997/33440f14-ce4c-11e4-811c-53e9a39c7402.jpg)
 *Figure 2-3. "Each working data pipeline is designed like a log; each broken data pipeline is broken in its own way." --Count Leo Tolstoy (tanslation by the author)*
 
 Of particular importance: the destination system only knows about the log and does not know any details of the system of origin. The consumer system need not concern itself with whether the data came from a relational database, a new-fangled key-value store, or was generated directly by some application. This seems like a minor point, but is, in fact, critical.
@@ -83,6 +86,7 @@ This idea of using logs for data flow has been floating around LinkedIn since ev
 
 My own involvement in this started around 2008 after we had shipped our key-value store. My next project was to try to get a working Hadoop setup going, and move some of our recommendation processes there. Having little experience in this area, we naturally budgeted a few weeks for getting data in and out, and the rest of our time for implementing fancy prediction algorithms. So began a long slog.
 
+![chapter02 f4](https://cloud.githubusercontent.com/assets/2742842/6725995/333f3688-ce4c-11e4-999c-f83716380cb1.png)
 *Figure 2-4. ETL in ancient Greece. Not much has changed.*
 
 We originally planned to just scrape the data out of our existing Oracle data warehouse. The first discovery was that getting data out of Oracle quickly is something of a dark art. Worse, the data warehouse processing was not appropriate for the production batch processing we planned for Hadoop—much of the processing was non-reversable and specific to the reporting being done. We ended up avoiding the data warehouse and going directly to source databases and log files. Finally, we implemented another pipeline to load data into our key-value store for serving results.
@@ -99,6 +103,7 @@ Third, we still had very low data coverage. That is, if you looked at the overal
 
 The way we had been proceeding—building out custom data loads for each data source and destination—was clearly infeasible. We had dozens of data systems and data repositories. Connecting all of these would have led to building custom piping between each pair of systems, looking something like Figure 2-5.
 
+![chapter02 f5](https://cloud.githubusercontent.com/assets/2742842/6725996/33436abe-ce4c-11e4-95e9-62c9d222984d.png)
 *Figure 2-5. A fully connnected architecture that has a separate pipleline between each system*
 
 Note that data often flows in both directions, as many systems (databases and Hadoop) are both sources and destinations for data transfer. This meant that we would end up building two pipelines per system: one to get data in and one to get data out.
@@ -107,6 +112,7 @@ This clearly would take an army of people to build and would never be operable. 
 
 Instead, we needed something generic, as shown in Figure 2-6.
 
+![chapter02 f6](https://cloud.githubusercontent.com/assets/2742842/6726000/3375c1f8-ce4c-11e4-8e50-9c9cab53f5dc.png)
 *Figure 2-6. An architecture built around a central hub*
 
 As much as possible, we needed to isolate each consumer from the source of the data. The consumer should ideally integrate with just a single data repository that would give her access to everything.
@@ -133,6 +139,7 @@ I think this has the added benefit of making data warehousing ETL much moreorgan
 
 A better approach is to have a central pipeline, the log, with a well-defined API for adding data. The responsibility of integrating with this pipeline and providing a clean, well-structured data feed lies with the producer of this data feed. This means that as part of their system design and implementation, they must consider the problem of getting data out and into a well-structured form for delivery to the central pipeline. The addition of new storage systems is of no consequence to the data warehouse team, as they have a central point of integration. The data warehouse team handles only the simpler problem of loading structured feeds of data from the central log and carrying out transformation specific to their system (see Figure 2-7).
 
+![chapter02 f7](https://cloud.githubusercontent.com/assets/2742842/6725993/331844ce-ce4c-11e4-8644-6799fb3a9ed6.png)
 *Figure 2-7. There is a human element to data flow as well. This is one of key aspects of democritizing access to data.*
 
 This point about organizational scalability becomes particularly important when an organization considers adopting additional data systems beyond a traditional data warehouse. Say, for example, that you wish to provide search capabilities over the complete data set of the organization. Or, say that you want to provide sub-second monitoring of data streams with real-time trend graphs and alerting. In either case, the infrastructure of the traditional data warehouse or even a Hadoop cluster will be inappropriate. Worse, the ETL processing pipeline built to support database loads is likely of no use for feeding these other systems, making bootstrapping these pieces of infrastructure as large an undertaking as adopting a data warehouse. This likely isn’t feasible and probably helps explain why most organizations don’t have these capabilities easily available for all their data. By contrast, if the organization had built out feeds of uniform, well-structured data, getting any new system full access to all data requires only a single bit of integration plumbing to attach to the pipeline.
@@ -158,6 +165,8 @@ The typical approach to activity data in the web industry is to log it out to te
 
 At LinkedIn, we have built our event data handling in a log-centric fashion. We are using Kafka as the central, multisubscriber event log (see Figure 2-8). We have defined several hundred event types, each capturing the unique attributes about a particular type of action. This covers everything from page views, ad impressions, and searches to service invocations and application exceptions.
 
+
+![chapter02 f8](https://cloud.githubusercontent.com/assets/2742842/6725998/33477686-ce4c-11e4-9a5b-c66da61f87b1.png)
 *Figure 2-8. What happens when you view a job on LinkedIn? The system is responsible for displaying the job records, and each system that needs to be aware of this subscribes to the stream of all job views and reacts appropriatedly in its own timeframe.*
 
 To understand the advantages of this, imagine a simple event showing a job posting on the job page. The job page should contain only the logic required to display the job. However, in a fairly dynamic site, this could easily become tangled up with additional logic unrelated to showing the job. For example, let’s say we need to integrate the following systems:
@@ -184,6 +193,8 @@ We used a few tricks in Kafka to support this kind of scale:
 
 In order to allow horizontal scaling, we chop up our log into partitions, as shown inFigure 2-9.
 
+
+![chapter02 f9](https://cloud.githubusercontent.com/assets/2742842/6725999/3369dd84-ce4c-11e4-861b-e50bde99dd8b.png)
 *Figure 2-9. By partitioning the log, we allow each partition to act independently of all other partitions. This lets us horizontally scale the write throughput.*
 
 Each partition is a totally ordered log, but there is no global ordering between partitions (other than perhaps some wall-clock time you might include in your messages). The writer controls the assignment of the messages to a particular partition, with most users choosing to partition by some kind of key (such as a user ID). Partitioning allows log appends to occur without coordination between shards, and allows the throughput of the system to scale linearly with the Kafka cluster size while still maintaining ordering within the sharding key.
