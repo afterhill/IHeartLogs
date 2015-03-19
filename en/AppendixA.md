@@ -31,12 +31,12 @@ Everyone seems to use different terms for the same things, so it is a bit of a p
   - “Models and Issues in Data Stream Systems” is probably the best overview of the early research in this area.
   - “High-Availability Algorithms for Distributed Stream Processing”
   - A couple of random systems papers:
-    o “TelegraphCQ”
-    o “Aurora”
-    o “NiagaraCQ”
-    o “Discretized Streams”: This paper discusses Spark’s streaming system.
-    o “MillWheel: Fault-Tolerant Stream Processing at Internet Scale” describes one of Google’s stream processing systems.
-    o “Naiad: A Timely Dataflow System”
+    - “TelegraphCQ”
+    - “Aurora”
+    - “NiagaraCQ”
+    - “Discretized Streams”: This paper discusses Spark’s streaming system.
+    - “MillWheel: Fault-Tolerant Stream Processing at Internet Scale” describes one of Google’s stream processing systems.
+    - “Naiad: A Timely Dataflow System”
     
 ###Enterprise Software
 
@@ -63,10 +63,10 @@ Enterprise service bus
 ###Open Source
 
 There are almost too many open source systems to mention, but here are a few of them:
-o Kafka is the “log as a service” project that is the inspiration for much of this book.
-o BookKeeper and Hedwig comprise another open source “log as a service.” They seem to be more targeted at data system internals than at event data.
-o Akka is an actor framework for Scala. It has a module for persistence that provides persistence and journaling. (There is even a Kafka plugin for persistence.)
-o Samza is a stream processing framework we are working on at LinkedIn. It uses many of the ideas in this book, and integrates with Kafka as the underlying log.
-o Storm is a popular stream processing framework that integrates well with Kafka.
-o Spark Streaming is a stream processing framework that is part of Spark.
-o Summingbird is a layer on top of Storm or Hadoop that provides a convenient computing abstraction.
+- Kafka is the “log as a service” project that is the inspiration for much of this book.
+- BookKeeper and Hedwig comprise another open source “log as a service.” They seem to be more targeted at data system internals than at event data.
+- Akka is an actor framework for Scala. It has a module for persistence that provides persistence and journaling. (There is even a Kafka plugin for persistence.)
+- Samza is a stream processing framework we are working on at LinkedIn. It uses many of the ideas in this book, and integrates with Kafka as the underlying log.
+- Storm is a popular stream processing framework that integrates well with Kafka.
+- Spark Streaming is a stream processing framework that is part of Spark.
+- Summingbird is a layer on top of Storm or Hadoop that provides a convenient computing abstraction.
