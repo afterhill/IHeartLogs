@@ -46,6 +46,8 @@ Here is how this works. The system is divided into two logical pieces: the log a
 
 The serving nodes subscribe to the log and apply writes as quickly as possible to their local indexes in the order that the log has stored them (see Figure 4-1).
 
+![chapter04 f1](https://cloud.githubusercontent.com/assets/2742842/6726455/76d3b878-ce52-11e4-956f-8d2c43fb1043.png)
+
 *Figure 4-1. A simplified architecture for a log-centric data system*
 
 The client can get read-your-write semantics from any node by providing the timestamp of a write as part of its query. A serving node receiving such a query will compare the desired timestamp to its own index point, and if necessary, delay the request until it has indexed up to at least that time to avoid serving stale data.
@@ -55,6 +57,10 @@ The serving nodes may or may not need to have any notion of mastership or leader
 One of the trickier things a distributed system must do is handle restoring failed nodes or moving partitions from node to node. A typical approach would have the log retain only a fixed window of data and combine this with a snapshot of the data stored in the partition. It is equally possible for the log to retain a complete copy of data and compact the log itself. This moves a significant amount of complexity out of the serving layer, which is system-specific, and into the log, which can be general purpose.
 
 By having this log system, you get a fully developed subscription API for the contents of the data store that feeds ETL into other systems. In fact, many systems can share the same log while providing different indexes, as shown in Figure 4-2:
+
+![chapter04 f2](https://cloud.githubusercontent.com/assets/2742842/6726456/772d0cb6-ce52-11e4-8138-16aadc1c9dd5.png)
+
+*Figure 4-2. A log-centric infrastructure stack*
 
 Note how such a log-centric system is itself immediately a provider of data streams for processing and loading in other systems. Likewise, a stream processor can consume multiple input streams and then serve them via another system that indexes that output.
 
