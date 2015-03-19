@@ -16,6 +16,8 @@ The real driver for the processing model is the method of data collection. Data 
 
 The United States census provides a good example of batch data collection. The census periodically kicks off and does a brute force discovery and enumeration of US citizens by having people walk from door to door. This made a lot of sense in 1790 when the census was first begun (see Figure 3-1). Data collection at the time was inherently batch oriented, as it involved riding around on horseback and writing down records on paper, then transporting this batch of records to a central location where humans added up all the counts. These days, when you describe the census process, one immediately wonders why we don’t keep a journal of births and deaths and produce population counts either continuously or with whatever granularity is needed.
 
+![chapter03 f1](https://cloud.githubusercontent.com/assets/2742842/6726283/6df4abd8-ce50-11e4-8a81-46d0992b6779.png)
+
 *Figure 3-1. The first census was a batch collection because the technology of the time demanded it. However, batch data collection is no longer necessary for a digital, networkedorganizaiton.*
 
 This is an extreme example, but many data transfer processes still depend on taking periodic dumps and bulk transfer and integration. The only natural way to process a bulk dump is with a batch process. As these processes are replaced with continuous feeds, we naturally start to move towards continuous processing to smooth out the processing resources needed and reduce latency.
@@ -41,6 +43,8 @@ For those interested in more details on the relationship between logs and stream
 ###Data Flow Graphs
 
 The most interesting aspect of stream processing has nothing to do with the internals of a stream processing system, but instead with how it extends our idea of what a data feed is from the earlier data integration discussion. We discussed primarily feeds or logs of primary data—that is, the events and rows of data directly produced in the execution of various applications. Stream processing allows us to also include feeds computed off of other feeds. These derived feeds look no different to consumers than the feeds of primary data from which they are computed (see Figure 3-2).
+
+![chapter03 f2](https://cloud.githubusercontent.com/assets/2742842/6726284/6df4fe08-ce50-11e4-82db-6e1735c2c756.png)
 
 *Figure 3-2. A multijob stream processing graph that flows data among multiple logs*
 
@@ -82,6 +86,8 @@ An interesting application of this kind of log-oriented data modeling is the Lam
 
 The Lambda Architecture looks something like Figure 3-3.
 
+![chapter03 f3](https://cloud.githubusercontent.com/assets/2742842/6726286/6dfd3c44-ce50-11e4-8fcf-cb85d704b486.png)
+
 *Figure 3-3. The Lambda Architecture*
 
 The way this works is that an immutable sequence of records is captured and fed into a batch-and-stream processing system in parallel. You implement your transformation logic twice, once in the batch system and once in the stream processing system. Then you stitch together the results from both at query time to produce a complete answer.
@@ -121,6 +127,8 @@ So how can we do the reprocessing directly from our stream processing job? My pr
 4. Stop the old version of the job and delete the old output table.
 
 This architecture looks something like Figure 3-4.
+
+![chapter03 f4](https://cloud.githubusercontent.com/assets/2742842/6726285/6dfb2bfc-ce50-11e4-89bd-a7c8b8bf125c.png)
 
 *Figure 3-4. An alternative to Lambda Architecture that removes the need for a batch system.*
 
@@ -175,6 +183,8 @@ For event data, Kafka supports retaining a window of data. The window can be def
 For keyed data, however, a nice property of a complete log is that you can replay it to recreate the state of the source system. That is, if I have the log of changes, I can replay that log into a table in another database and recreate the state of the table at any point in time. This also works across different systems: you can replay a log of updates that originally went into a database into any other type of system that maintains data by primary key (a search index, a local store, and so on).
 
 However, retaining the complete log will use more and more space as time goes by, and the replay will take longer and longer. Hence, in Kafka, we support a different type of retention aimed at supporting this use case, an example of which is shown inFigure 3-5. Instead of simply throwing away the old log entirely, we garbage-collect obsolete records from the tail of the log. Any record in the tail of the log that has a more recent update is eligible for this kind of cleanup. By doing this, we still guarantee that the log contains a complete backup of the source system, but now we can no longer recreate all previous states of the source system, only the more recent ones. We call this feature log compaction.
+
+![chapter03 f5](https://cloud.githubusercontent.com/assets/2742842/6726287/6dff5eac-ce50-11e4-849a-b45167c2590e.png)
 
 *Figure 3-5. Log compaction ensures that the log retains only the latest update for each key. This is useful for modeling updates to mutable data as a log.*
 
