@@ -1,4 +1,4 @@
-<font size="26">I ♥ Logs</font>
+<span style="font-size:16px">I ♥ Logs<span>
 
 -------------------------------
 By Jay Kreps
