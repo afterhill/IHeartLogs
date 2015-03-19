@@ -13,5 +13,7 @@ By Jay Kreps
 - [About Author](https://github.com/MengJueM/IHeartLogs/blob/master/AboutAuthor.md)
 - [About Translator](https://github.com/MengJueM/IHeartLogs/blob/master/AboutTranslator.md)
 
+-------------------------
+
 ###Cover
 ![cover](https://cloud.githubusercontent.com/assets/2742842/6726724/9f794358-ce55-11e4-9c0c-1f58df77c19b.jpg)
