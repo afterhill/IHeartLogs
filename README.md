@@ -1,4 +1,4 @@
-<sub>I ♥ Logs</sub>
+**I ♥ Logs**
 
 -------------------------------
 By Jay Kreps
