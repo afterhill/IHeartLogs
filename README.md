@@ -2,10 +2,10 @@
 By Jay Kreps
 
 ##Table of Content
-- Chapter 1. Introduction
-- Chapter 2. Data Integration
-- Chapter 3. Logs and Real-Time Stream Processing
-- Chapter 4. Building Data Systems with Logs
-- Appendix A. Reference
+- Chapter 1. Introduction [[en](https://github.com/MengJueM/IHeartLogs/blob/master/en/Chapter1.md)][[chinese](https://github.com/MengJueM/IHeartLogs/blob/master/chinese/Chapter1.md)]
+- Chapter 2. Data Integration [[en](https://github.com/MengJueM/IHeartLogs/blob/master/en/Chapter2.md)][[chinese](https://github.com/MengJueM/IHeartLogs/blob/master/chinese/Chapter2.md)]
+- Chapter 3. Logs and Real-Time Stream Processing [[en](https://github.com/MengJueM/IHeartLogs/blob/master/en/Chapter3.md)][[chinese](https://github.com/MengJueM/IHeartLogs/blob/master/chinese/Chapter3.md)]
+- Chapter 4. Building Data Systems with Logs [[en](https://github.com/MengJueM/IHeartLogs/blob/master/en/Chapter4.md)][[chinese](https://github.com/MengJueM/IHeartLogs/blob/master/chinese/Chapter4.md)]
+- Appendix A. Reference [[en](https://github.com/MengJueM/IHeartLogs/blob/master/en/AppendixA.md)][[chinese](https://github.com/MengJueM/IHeartLogs/blob/master/chinese/AppendixA.md)]
 - [About Author](https://github.com/MengJueM/IHeartLogs/blob/master/AboutAuthor.md)
-- About Translator
+- [About Translator](https://github.com/MengJueM/IHeartLogs/blob/master/AboutTranslator.md)
