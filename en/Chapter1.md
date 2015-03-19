@@ -9,6 +9,7 @@ Every programmer is familiar with this kind of log—a series of loosely structu
 This type of log is a degenerative form of the log concept I am going to describe. The biggest difference is that this type of application log is mostly meant for humans to read, whereas the logs I’ll be describing are also for programmatic access.
 Actually, if you think about it, the idea of humans reading through logs on individual machines is something of an anachronism. This approach quickly becomes unmanageable when many services and servers are involved. The purpose of logs quickly becomes an input to queries and graphs in order to understand behavior across many machines, something that English text in files is not nearly as appropriate for as the kind of structured log I’ll be talking about.
 
+![](https://github.com/github/training-kit/blob/master/images/professortocat.png)
 ![](https://github.com/MengJueM/IHeartLogs/releases/download/Chapter1-En/Chapter01.F1.png)
 *Figure 1-1. An excerpt from Apache log*
 
