@@ -1,0 +1,1 @@
+Jay Kreps is a Principal Staff Engineer at LinkedIn where he is the lead architect for data infrastructure. He is the original author of several open source projects, including Voldemort, Kafka, Azkaban, and Samza.
