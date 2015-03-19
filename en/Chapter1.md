@@ -9,11 +9,12 @@ Every programmer is familiar with this kind of log—a series of loosely structu
 This type of log is a degenerative form of the log concept I am going to describe. The biggest difference is that this type of application log is mostly meant for humans to read, whereas the logs I’ll be describing are also for programmatic access.
 Actually, if you think about it, the idea of humans reading through logs on individual machines is something of an anachronism. This approach quickly becomes unmanageable when many services and servers are involved. The purpose of logs quickly becomes an input to queries and graphs in order to understand behavior across many machines, something that English text in files is not nearly as appropriate for as the kind of structured log I’ll be talking about.
 
-![](https://github.com/MengJueM/IHeartLogs/releases/download/Chapter1-En/Chapter01.F1.png)
+![](https://cloud.githubusercontent.com/assets/2742842/6725319/be568f5a-ce42-11e4-8f16-24808ef95129.png)
 *Figure 1-1. An excerpt from Apache log*
 
 The log I’ll be discussing is a little more general and closer to what in the database or systems world might be called a commit log or journal. It is an append-only sequence of records ordered by time, as in Figure 1-2.
 
+![](https://cloud.githubusercontent.com/assets/2742842/6725321/beb72ba8-ce42-11e4-982d-d87e3c764478.png)
 *Figure 1-2. A structured log (records are numbered beginning with 0 based on the order in which they are written)*
 
 Each rectangle represents a record that was appended to the log. Records are stored in the order they were appended. Reads proceed from left to right. Each entry appended to the log is assigned a unique, sequential log entry number that acts as its unique key. The contents and format of the records aren’t important for the purposes of this discussion. To be concrete, we can just imagine each record to be a JSON blob, but of course any data format will do.
@@ -75,6 +76,7 @@ The distributed systems literature commonly distinguishes two broad approaches t
 
 As shown in Figure 1-3, in the primary backup model a master node is chosen to handle all reads and writes. Each write is posted to the log. Slaves subscribe to the log and apply the changes that the master executed to their local state. If the master fails, a new master is chosen from the slaves. In the state machine replication model, all nodes are peers. Writes go first to the log and all nodes apply the write in the order determined by the log.
 
+![](https://cloud.githubusercontent.com/assets/2742842/6725320/beb61362-ce42-11e4-8685-d20abf363ba8.png)
 *Figure 1-3. In the primary backup model, a master node is chosen to handle all reads and writes. In the state machine replicatio model, all nodes acts as peers.*
 
 ####An Example
